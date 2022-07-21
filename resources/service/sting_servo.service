@@ -1,0 +1,14 @@
+[Unit]
+Description=Cam Producer
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=pi
+ExecStart=/bin/bash -c "cd /home/pi/piIpCam/ && make start_uwsgi_servo"
+
+[Install]
+WantedBy=multi-user.target

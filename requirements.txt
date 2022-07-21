@@ -1,0 +1,14 @@
+Flask
+opencv-python
+imutils
+uwsgi
+numpy
+gpiozero
+flask-cors
+face_recognition_models
+Click>=6.0
+dlib>=19.24.0
+Pillow
+scipy>=0.17.0
+confluent-kafka
+smbus

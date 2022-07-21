@@ -131,3 +131,5 @@ dmypy.json
 .idea
 
 resources/object_tracker/*
+resources/detector/*
+resources/opencv/*
