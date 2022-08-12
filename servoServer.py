@@ -36,6 +36,22 @@ def idle_servo(_servo: int):
     return {'status': 'ok'}, 200
 
 
+@api.route('/auto_idle_off/<int:_servo>')
+def auto_idle_off(_servo: int):
+    chosen_servo = servo[_servo]
+    chosen_servo.auto_idle_off()
+
+    return {'status': 'ok'}, 200
+
+
+@api.route('/auto_idle_on/<int:_servo>')
+def auto_idle_on(_servo: int):
+    chosen_servo = servo[_servo]
+    chosen_servo.auto_idle_on()
+
+    return {'status': 'ok'}, 200
+
+
 @api.route('/move/<int:_servo>/<string:move>/')
 def move_servo(_servo: int, move: str):
     chosen_servo = servo[_servo]

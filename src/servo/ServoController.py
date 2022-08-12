@@ -26,6 +26,12 @@ class ServoController:
     def idle(self):
         self.i2cController.write(config["i2c"]["cmd"]["move"], [])
 
+    def auto_idle_off(self):
+        self.i2cController.write(config["i2c"]["cmd"]["autoidleoff"], [])
+
+    def auto_idle_on(self):
+        self.i2cController.write(config["i2c"]["cmd"]["autoidleon"], [])
+
     def step_back(self):
         pass
 

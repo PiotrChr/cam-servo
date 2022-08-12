@@ -17,6 +17,8 @@ config = {
             "move": 0x01,
             "idle": 0x02,
             "reset": 0x03,
+            "autoidleon": 0x04,
+            "autoidleoff": 0x05,
         },
         "address": {
             "servoController": 0x08
