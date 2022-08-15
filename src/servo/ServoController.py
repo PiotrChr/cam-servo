@@ -18,13 +18,13 @@ class ServoController:
         pass
 
     def reset(self):
-        self.i2cController.write(config["i2c"]["cmd"]["move"], [])
+        self.i2cController.write(config["i2c"]["cmd"]["reset"], [])
 
     def move(self, angle):
         self.i2cController.write(config["i2c"]["cmd"]["move"], [self.id, angle])
 
     def idle(self):
-        self.i2cController.write(config["i2c"]["cmd"]["move"], [])
+        self.i2cController.write(config["i2c"]["cmd"]["idle"], [])
 
     def auto_idle_off(self):
         self.i2cController.write(config["i2c"]["cmd"]["autoidleoff"], [])
@@ -32,11 +32,11 @@ class ServoController:
     def auto_idle_on(self):
         self.i2cController.write(config["i2c"]["cmd"]["autoidleon"], [])
 
-    def step_back(self):
-        pass
+    def step(self, direction: int):
+        self.i2cController.write(config["i2c"]["cmd"]["step"], [self.id, direction])
 
-    def step_forward(self):
-        pass
+    def read_pos(self):
+        return self.i2cController.read(2)
 
     def cleanup(self):
         pass

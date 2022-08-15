@@ -19,6 +19,8 @@ config = {
             "reset": 0x03,
             "autoidleon": 0x04,
             "autoidleoff": 0x05,
+            "step": 0x06,
+            "readpos": 0x07
         },
         "address": {
             "servoController": 0x08

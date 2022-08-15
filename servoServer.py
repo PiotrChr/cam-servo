@@ -5,8 +5,8 @@ import argparse
 from config import config
 
 servo = {
-    0: ServoController(1, config["i2c"]["address"]),
-    1: ServoController(2, config["i2c"]["address"])
+    0: ServoController(1, config["i2c"]["address"]["servoController"], 70, 115),
+    1: ServoController(2, config["i2c"]["address"]["servoController"], 0, 180)
 }
 
 main = Blueprint('main', __name__)
@@ -20,49 +20,57 @@ def index():
     return 'hello', 200
 
 
-@api.route('/reset/<int:_servo>/')
-def reset_servo(_servo: int):
-    chosen_servo = servo[_servo]
+@api.route('/reset/')
+def reset_servo():
+    chosen_servo = servo[0]
     chosen_servo.reset()
 
     return {'status': 'ok'}, 200
 
 
-@api.route('/idle/<int:_servo>/')
-def idle_servo(_servo: int):
-    chosen_servo = servo[_servo]
+@api.route('/idle/')
+def idle_servo():
+    chosen_servo = servo[0]
     chosen_servo.idle()
 
     return {'status': 'ok'}, 200
 
 
-@api.route('/auto_idle_off/<int:_servo>')
-def auto_idle_off(_servo: int):
-    chosen_servo = servo[_servo]
+@api.route('/auto_idle_off/')
+def auto_idle_off():
+    chosen_servo = servo[0]
     chosen_servo.auto_idle_off()
 
     return {'status': 'ok'}, 200
 
 
-@api.route('/auto_idle_on/<int:_servo>')
-def auto_idle_on(_servo: int):
-    chosen_servo = servo[_servo]
+@api.route('/auto_idle_on/')
+def auto_idle_on():
+    chosen_servo = servo[0]
     chosen_servo.auto_idle_on()
 
     return {'status': 'ok'}, 200
 
 
-@api.route('/move/<int:_servo>/<string:move>/')
-def move_servo(_servo: int, move: str):
-    chosen_servo = servo[_servo]
-    move = int(move)
-
-    if move == -1:
-        chosen_servo.step_back()
-    elif move == 1:
-        chosen_servo.step_forward()
+@api.route('/move/<int:_servo>/<int:move>/')
+def move_servo(_servo: int, move: int):
+    servo[_servo].move(int(move))
 
     return {'status': 'ok'}, 200
+
+
+@api.route('/step/<int:_servo>/<string:step>/')
+def step_servo(_servo: int, step: str):
+    servo[_servo].step(int(step))
+
+    return {'status': 'ok'}, 200
+
+
+@api.route('/readpos/')
+def position():
+    v, h = servo[0].read_pos()
+
+    return {'position': {'v': v, 'h': h}}, 200
 
 
 @main.errorhandler(404)

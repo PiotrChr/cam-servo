@@ -4,12 +4,25 @@ import time
 bus = smbus.SMBus(1)
 address = 0x08
 
-moveCmd = 0x01
-setIdleCmd = 0x02
-resetCmd = 0x03
+move = 0x01
+setIdle = 0x02
+reset = 0x03
+autoIdleOne = 0x04
+autoIdleOff = 0x05
+step = 0x06
+readpos = 0x07
 
-bus.write_i2c_block_data(address, setIdleCmd, [2, 125])
-time.sleep(1)
+bus.write_i2c_block_data(address, readpos, [2, 125])
+print(bus.read_i2c_block_data(address, 0, 2))
+print(bus.read_byte(address))
+print(bus.read_byte(address))
+print(bus.read_byte(address))
+print(bus.read_byte(address))
+print(bus.read_byte(address))
+
+for i in range(0, 10):
+    print(bus.read_byte(address))
+
 #
 # for i in range(1, 180):
 #     bus.write_i2c_block_data(address, 0x01, [1, i])

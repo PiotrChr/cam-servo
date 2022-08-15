@@ -8,3 +8,7 @@ class I2cController:
 
     def write(self, command, value):
         self.bus.write_i2c_block_data(self.address, command, value)
+
+    def read(self, _bytes):
+        return self.bus.read_i2c_block_data(self.address, 0, _bytes)
+
