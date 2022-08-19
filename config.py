@@ -20,7 +20,9 @@ config = {
             "autoidleon": 0x04,
             "autoidleoff": 0x05,
             "step": 0x06,
-            "readpos": 0x07
+            "idle_axis": 0x07,
+            "idle_speed": 0x08,
+            "stop": 0x09
         },
         "address": {
             "servoController": 0x08

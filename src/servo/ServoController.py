@@ -35,6 +35,15 @@ class ServoController:
     def step(self, direction: int):
         self.i2cController.write(config["i2c"]["cmd"]["step"], [self.id, direction])
 
+    def toggle_idle(self, toggle_val: int):
+        self.i2cController.write(config["i2c"]["cmd"]["idle_axis"], [self.id, toggle_val])
+
+    def idle_speed(self, speed):
+        self.i2cController.write(config["i2c"]["cmd"]["idle_speed"], list(divmod(speed, 10)))
+
+    def stop(self):
+        self.i2cController.write(config["i2c"]["cmd"]["stop"], [])
+
     def read_pos(self):
         return self.i2cController.read(2)
 

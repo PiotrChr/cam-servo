@@ -10,9 +10,10 @@ reset = 0x03
 autoIdleOne = 0x04
 autoIdleOff = 0x05
 step = 0x06
-readpos = 0x07
+idle_axis = 0x07
+idle_speed = 0x08
 
-bus.write_i2c_block_data(address, readpos, [2, 125])
+bus.write_i2c_block_data(address, move, [1, 90])
 print(bus.read_i2c_block_data(address, 0, 2))
 print(bus.read_byte(address))
 print(bus.read_byte(address))

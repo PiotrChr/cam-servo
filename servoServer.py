@@ -73,6 +73,20 @@ def position():
     return {'position': {'v': v, 'h': h}}, 200
 
 
+@api.route('/step/<int:_servo>/<int:toggle_val>/')
+def step_servo(_servo: int, toggle_val: int):
+    servo[_servo].toggle_idle(toggle_val)
+
+    return {'status': 'ok'}, 200
+
+
+@api.route('/stop/')
+def stop():
+    servo[0].stop()
+
+    return {'status': 'ok'}, 200
+
+
 @main.errorhandler(404)
 def page_not_found(e):
     return jsonify(error=str(e), url=request.url, details="Cam resource was not found"), 404
