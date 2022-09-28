@@ -73,9 +73,16 @@ def position():
     return {'position': {'v': v, 'h': h}}, 200
 
 
-@api.route('/step/<int:_servo>/<int:toggle_val>/')
-def step_servo(_servo: int, toggle_val: int):
+@api.route('/toggle_idle/<int:_servo>/<int:toggle_val>/')
+def toggle_idle(_servo: int, toggle_val: int):
     servo[_servo].toggle_idle(toggle_val)
+
+    return {'status': 'ok'}, 200
+
+
+@api.route('/idle_speed/<int:idle_speed>/')
+def set_idle_speed(idle_speed: int):
+    servo[0].idle_speed(idle_speed)
 
     return {'status': 'ok'}, 200
 

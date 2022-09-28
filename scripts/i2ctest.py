@@ -5,13 +5,14 @@ bus = smbus.SMBus(1)
 address = 0x08
 
 move = 0x01
-setIdle = 0x02
+set_idle = 0x02
 reset = 0x03
-autoIdleOne = 0x04
-autoIdleOff = 0x05
+auto_idle_on = 0x04
+auto_idle_off = 0x05
 step = 0x06
 idle_axis = 0x07
 idle_speed = 0x08
+stop = 0x09
 
 bus.write_i2c_block_data(address, move, [1, 90])
 print(bus.read_i2c_block_data(address, 0, 2))
