@@ -3,6 +3,8 @@ from flask import Flask, Blueprint, Response, jsonify, request
 from flask_cors import CORS
 import argparse
 from config import config
+import os
+
 
 servo = {
     0: ServoController(1, config["i2c"]["address"]["servoController"], 70, 115),
@@ -90,6 +92,13 @@ def set_idle_speed(idle_speed: int):
 @api.route('/stop/')
 def stop():
     servo[0].stop()
+
+    return {'status': 'ok'}, 200
+
+
+@api.route('/restart/')
+def stop():
+    os.system("sudo reboot")
 
     return {'status': 'ok'}, 200
 
