@@ -70,9 +70,16 @@ def step_servo(_servo: int, step: str):
 
 @api.route('/readpos/')
 def position():
-    v, h = servo[0].read_pos()
+    h, v, idle, idle_move_right, idle_move_up, auto_idle, idle_speed = servo[0].read_pos()
 
-    return {'position': {'v': v, 'h': h}}, 200
+    return {
+        'position': {'v': v, 'h': h},
+        'idle': bool(idle),
+        'idleMoveRight': bool(idle_move_right),
+        'idleMoveUp': bool(idle_move_up),
+        'autoIdle': bool(auto_idle),
+        'idleSpeed': idle_speed
+        }, 200
 
 
 @api.route('/toggle_idle/<int:_servo>/<int:toggle_val>/')
@@ -97,7 +104,7 @@ def stop():
 
 
 @api.route('/restart/')
-def stop():
+def restart():
     os.system("sudo reboot")
 
     return {'status': 'ok'}, 200

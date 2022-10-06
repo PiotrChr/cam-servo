@@ -45,7 +45,7 @@ class ServoController:
         self.i2cController.write(config["i2c"]["cmd"]["stop"], [])
 
     def read_pos(self):
-        return self.i2cController.read(2)
+        return self.i2cController.read(7)
 
     def cleanup(self):
         pass
