@@ -4,7 +4,15 @@ from flask_cors import CORS
 import argparse
 from config import config
 import os
+import time
+import RPi.GPIO as GPIO
 
+ARDUINO_RESET_PIN = 16
+DEFAULT_STATUS = {'status': 'OK'}
+
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(ARDUINO_RESET_PIN, GPIO.OUT)
+GPIO.output(ARDUINO_RESET_PIN, GPIO.HIGH)
 
 servo = {
     0: ServoController(1, config["i2c"]["address"]["servoController"], 70, 115),
@@ -27,7 +35,7 @@ def reset_servo():
     chosen_servo = servo[0]
     chosen_servo.reset()
 
-    return {'status': 'ok'}, 200
+    return DEFAULT_STATUS, 200
 
 
 @api.route('/idle/')
@@ -35,7 +43,7 @@ def idle_servo():
     chosen_servo = servo[0]
     chosen_servo.idle()
 
-    return {'status': 'ok'}, 200
+    return DEFAULT_STATUS, 200
 
 
 @api.route('/auto_idle_off/')
@@ -43,7 +51,7 @@ def auto_idle_off():
     chosen_servo = servo[0]
     chosen_servo.auto_idle_off()
 
-    return {'status': 'ok'}, 200
+    return DEFAULT_STATUS, 200
 
 
 @api.route('/auto_idle_on/')
@@ -58,19 +66,31 @@ def auto_idle_on():
 def move_servo(_servo: int, move: int):
     servo[_servo].move(int(move))
 
-    return {'status': 'ok'}, 200
+    return DEFAULT_STATUS, 20
 
 
 @api.route('/step/<int:_servo>/<string:step>/')
 def step_servo(_servo: int, step: str):
     servo[_servo].step(int(step))
 
-    return {'status': 'ok'}, 200
+    return DEFAULT_STATUS, 200
+
+
+@api.route('/reset_dev/')
+def reset_dev():
+    GPIO.output(ARDUINO_RESET_PIN, GPIO.LOW)
+    time.sleep(0.5)
+    GPIO.output(ARDUINO_RESET_PIN, GPIO.HIGH)
+
+    return DEFAULT_STATUS, 200
 
 
 @api.route('/readpos/')
 def position():
-    h, v, idle, idle_move_right, idle_move_up, auto_idle, idle_speed = servo[0].read_pos()
+    try:
+        h, v, idle, idle_move_right, idle_move_up, auto_idle, idle_speed = servo[0].read_pos()
+    except:
+        return {"error" : "Connection error"}, 500
 
     return {
         'position': {'v': v, 'h': h},
@@ -86,28 +106,28 @@ def position():
 def toggle_idle(_servo: int, toggle_val: int):
     servo[_servo].toggle_idle(toggle_val)
 
-    return {'status': 'ok'}, 200
+    return DEFAULT_STATUS, 200
 
 
 @api.route('/idle_speed/<int:idle_speed>/')
 def set_idle_speed(idle_speed: int):
     servo[0].idle_speed(idle_speed)
 
-    return {'status': 'ok'}, 200
+    return DEFAULT_STATUS, 200
 
 
 @api.route('/stop/')
 def stop():
     servo[0].stop()
 
-    return {'status': 'ok'}, 200
+    return DEFAULT_STATUS, 200
 
 
 @api.route('/restart/')
 def restart():
     os.system("sudo reboot")
 
-    return {'status': 'ok'}, 200
+    return DEFAULT_STATUS, 200
 
 
 @main.errorhandler(404)

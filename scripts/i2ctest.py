@@ -13,6 +13,7 @@ step = 0x06
 idle_axis = 0x07
 idle_speed = 0x08
 stop = 0x09
+reset_dev = 0x0A
 
 bus.write_i2c_block_data(address, move, [1, 90])
 print(bus.read_i2c_block_data(address, 0, 2))

@@ -22,7 +22,8 @@ config = {
             "step": 0x06,
             "idle_axis": 0x07,
             "idle_speed": 0x08,
-            "stop": 0x09
+            "stop": 0x09,
+            "reset_dev": 0x10,
         },
         "address": {
             "servoController": 0x08
